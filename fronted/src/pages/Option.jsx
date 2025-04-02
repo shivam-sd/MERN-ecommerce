@@ -14,7 +14,7 @@ const Option = () => {
           <Link to="/users-login" className="bg-blue-500 p-1 rounded-md text-white font-bold flex gap-2 items-center justify-between"><FaRegUser className="text-black"/> As A User</Link>
         </div>
         <div className="bg-[#E195AB] p-2 border border-white w-40 h-36 duration-300 rounded-md hover:scale-105 mt-5 flex items-center justify-center">
-          <Link className="bg-blue-500 p-1 rounded-md text-white font-bold flex gap-2 items-center justify-between"> <IoManSharp className="text-black"/>As A Seller</Link>
+          <Link to="/seller-login" className="bg-blue-500 p-1 rounded-md text-white font-bold flex gap-2 items-center justify-between"> <IoManSharp className="text-black"/>As A Seller</Link>
         </div>
       </div>
     </div>

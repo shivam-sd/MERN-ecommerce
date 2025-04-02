@@ -9,10 +9,10 @@ const LoginRouter = require("./routes/login.route");
 const userDetails = require("./routes/userDetail.route");
 const userLogout = require("./routes/logout.route");
 const ConnectToDB = require("./db/connectToDB");
-const sellerRegisterController = require("./controllers/sellerRegister.controller");
-const sellerLoginController = require("./controllers/sellerLogin.controller");
-const sellerDetailsController = require("./controllers/sellerDetails.controller");
-const sellerLogoutController = require("./controllers/sellerLogout.Controller");
+const sellerRegisterRoute = require("./routes/sellerRegister.route");
+const sellerLoginRoute = require("./routes/sellerLogin.route");
+const sellerDetailsRoute = require("./routes/sellerDetails.Route");
+const sellerLogoutRoute = require("./routes/sellerLogout.Route");
 ConnectToDB();
 
 
@@ -31,10 +31,10 @@ app.use("/users" , userDetails);
 app.use("/users", userLogout);
 
 //for seller Middelware
-app.use("/seller", sellerRegisterController);
-app.use("/seller" , sellerLoginController);
-app.use("/seller", sellerDetailsController);
-app.use("/seller", sellerLogoutController);
+app.use("/seller", sellerRegisterRoute);
+app.use("/seller" , sellerLoginRoute);
+app.use("/seller", sellerDetailsRoute);
+app.use("/seller", sellerLogoutRoute);
 
 
 

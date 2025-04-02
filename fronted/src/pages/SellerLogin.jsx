@@ -5,14 +5,13 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { toast } from "react-toastify";
-import Context from "../context/Context";
 
-function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+const SellerLogin = () => {
+
+  const [email , setEmail] = useState("");
+  const [password , setPassword] = useState("");
 
   const navigate = useNavigate();
-  const ContextUserdetail = useContext(Context);
 
   const handleFormData = async (e) => {
     e.preventDefault();
@@ -24,7 +23,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_USERS_BASE_URL}/users/login`,
+        `${import.meta.env.VITE_USERS_BASE_URL}/seller/login`,
         { email, password }, // Sending user data correctly
         {
           headers: {
@@ -35,14 +34,16 @@ function Login() {
       );
 
       const data = response.data;
-      localStorage.setItem("token", data.token);
+      // console.log(data)
+      localStorage.setItem("SellerToken", data.Sellertoken);
       console.log("Login Successful:", data);
 
       toast.success(data.message || "Login successful!", {
         position: "top-center",
       });
       navigate("/");
-      ContextUserdetail.fetchUsersDetails();
+      window.location.reload();
+      // ContextUserdetail.fetchUsersDetails();
 
     } catch (err) {
       console.error("Login Error:", err);
@@ -50,19 +51,19 @@ function Login() {
         position: "top-center",
       });
     }
-  };
+  }
 
   return (
-    <div className="mx-auto h-screen  container flex flex-col justify-between">
+    <div className="mx-auto container flex flex-col justify-between">
       <Header />
-      <div className="forms lg:h-screen md:h-auto lg:flex lg:items-center lg:justify-center ">
+      <div className="forms lg:h-auto md:h-auto lg:flex lg:items-center lg:justify-center mt-20 mb-20">
         <form
           onSubmit={handleFormData}
           className="border border-gray-400 h-auto p-4 flex flex-col rounded-sm relative"
         >
           <h1 className="flex items-center justify-center gap-2 text-xl font-bold">
             <FaUserAlt />
-            User Login
+            Seller Login
           </h1>
 
           <label className="mt-3 text-xl" htmlFor="email">
@@ -105,7 +106,10 @@ function Login() {
 
           <p className="flex items-center justify-center mt-1">
             Don't have an account?{" "}
-            <Link to="/users-register" className="duration-300 hover:underline ml-1">
+            <Link
+              to="/seller-register"
+              className="duration-300 hover:underline ml-1"
+            >
               Sign up
             </Link>
           </p>
@@ -114,6 +118,6 @@ function Login() {
       <Footer />
     </div>
   );
-}
+};
 
-export default Login;
+export default SellerLogin;

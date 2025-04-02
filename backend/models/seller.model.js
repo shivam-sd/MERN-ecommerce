@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const userSchema = mongoose.Schema({
+const sellerSchema = mongoose.Schema({
     name:{
         type:String,
         required:true,
@@ -14,6 +14,10 @@ const userSchema = mongoose.Schema({
         type:Number,
         required:true
     },
+    businessType:{
+        type:String,
+        required:true
+    },
     password:{
         type:String,
         required:true
@@ -24,11 +28,11 @@ const userSchema = mongoose.Schema({
     },
     role:{
         type:String,
-        enum:["USER","SELLER"],
-        default:"USER"
+        enum:["user","SELLER"],
+        default:"SELLER"
     }
 });
 
-const userModel = new mongoose.model("users" , userSchema);
+const sellerModel = new mongoose.model("seller" , sellerSchema);
 
-module.exports = userModel;
+module.exports = sellerModel;

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <div className="absolute bottom-0 w-full">
+    <div className="w-full">
       <footer className="w-full bg-gray-200 h-auto p-4">
         <div className="container mx-auto flex items-center justify-evenly p-1">
           <Link

@@ -4,7 +4,10 @@ import Footer from "../components/Footer";
 import { FaUserCircle } from "react-icons/fa";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, Outlet } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setUserDetails } from "../store/userSlice";
+import { toast } from "react-toastify";
 
 const AdminPanel = () => {
   const user = useSelector((state) => state?.user?.user?.user);
@@ -36,6 +39,26 @@ const AdminPanel = () => {
         setImage(Base64Image);
         localStorage.setItem("profilePic", Base64Image);
       };
+    }
+  };
+
+  const navigate = useNavigate();
+
+// user ko logout kraya ja rha hai
+  const handleLogutUser = async () => {
+    try {
+      const response = await axios.get(`http://localhost:3000/users/logout`, {
+        withCredentials: "include",
+      });
+      const data = response.data;
+      localStorage.removeItem("token");
+      console.log("logout", response);
+      toast.success(data.message || "User Logged out");
+      dispatch(setUserDetails(null));
+      navigate("/users-login");
+      window.location.reload(); // refresh the page after user logout
+    } catch (err) {
+      return toast.error(err.message || "User Not Logout");
     }
   };
 
@@ -71,10 +94,18 @@ const AdminPanel = () => {
           {user ? (
             <>
               <p className="font-bold text-3xl font-AfacadFlux">{user?.name}</p>
-              <span className="text-xl mt-4"><span className="font-bold">Role :-</span> {user?.role}</span>
-              <span className="text-xl mt-4"><span className="font-bold">Email :-</span> {user?.email}</span>
-              <span className="text-xl mt-4"><span className="font-bold">Phone :-</span> {user?.phone}</span>
-              <button className="text-white bg-red-500 rounded-md p-2 text-xl mt-6 font-AfacadFlux">Edit Your Profile</button>
+              <span className="text-xl mt-4">
+                <span className="font-bold">Role :-</span> {user?.role}
+              </span>
+              <span className="text-xl mt-4">
+                <span className="font-bold">Email :-</span> {user?.email}
+              </span>
+              <span className="text-xl mt-4">
+                <span className="font-bold">Phone :-</span> {user?.phone}
+              </span>
+              <button className="text-white bg-red-500 rounded-md p-2 text-xl mt-6 font-AfacadFlux">
+                Edit Your Profile
+              </button>
             </>
           ) : (
             <></>
@@ -84,10 +115,20 @@ const AdminPanel = () => {
           <Link to="/all-products" className="text-lg font-AfacadFlux font-bold">All Products</Link>
           </div> */}
 
-<Link to="/" className="mt-5 font-AfacadFlux text-2xl font-bold underline hover:text-blue-500 duration-200">Back</Link>
+          <button 
+          className="text-lg p-1 bg-red-500 text-white font-AfacadFlux rounded-sm font-bold cursor-pointer mt-5 hover:bg-red-400 duration-200"
+          onClick={handleLogutUser}
+          >
+            Logout
+          </button>
 
+          <Link
+            to="/"
+            className="mt-5 font-AfacadFlux text-2xl font-bold underline hover:text-blue-500 duration-200"
+          >
+            Back
+          </Link>
         </aside>
-        {/* <main className=""><Outlet /></main> */}
       </div>
       <Footer />
     </div>

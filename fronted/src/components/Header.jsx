@@ -5,31 +5,16 @@ import { IoSearchSharp } from "react-icons/io5";
 import { FaRegUserCircle } from "react-icons/fa";
 import { FaShoppingCart } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { setUserDetails } from "../store/userSlice";
 
 const Header = () => {
   const user = useSelector((state) => state?.user?.user?.user);
+  const seller = useSelector((state) => state?.seller?.seller);
   const dispatch = useDispatch();
 
   console.log("User Header ", user);
+  console.log("Seller Header ", seller);
 
-  const handleLogutUser = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3000/users/logout`, {
-        withCredentials: "include",
-      });
-      const data = response.data;
-      localStorage.removeItem("token");
-      console.log("logout", response);
-      toast.success(data.message || "User Logged out");
-      dispatch(setUserDetails(null));
-      window.location.reload(); // refresh the page after user logout
-    } catch (err) {
-      return toast.error(err.message || "User Not Logout");
-    }
-  };
+  
 
   return (
     <div>
@@ -56,6 +41,7 @@ const Header = () => {
             </div>
           </div>
           <div className="icons flex items-center justify-center lg:gap-6 gap-4">
+            {/* for use */}
             <div className="user text-3xl cursor-pointer">
               {user ? (
                 <div className="group absolute lg:right-52 md:right-52 right-36 lg:top-4 md:top-4 top-3 flex flex-col gap-2">
@@ -63,12 +49,37 @@ const Header = () => {
                     {user?.name}
                   </b>
                   <Link
-                  to="/user-profile"
-                  className="text-md font-bold font-AfacadFlux bg-gray-200 rounded-sm cursor-pointer hidden group-hover:block p-1 text-center">Profile</Link>
+                    to="/user-profile"
+                    className="text-md font-bold font-AfacadFlux bg-gray-200 rounded-sm cursor-pointer hidden group-hover:block p-1 text-center"
+                  >
+                    Profile
+                  </Link>
                 </div>
               ) : (
-                <FaRegUserCircle />
+                <><FaRegUserCircle className="" /></>
               )}
+            </div>
+
+            {/* for seller */}
+
+            <div className="user text-3xl cursor-pointer">
+              {seller ? (
+                <div className="group absolute lg:right-52 md:right-52 right-36 lg:top-4 md:top-4 top-3 flex flex-col gap-2">
+                  <b className="text-2xl flex justify-center items-center border border-sky-100 rounded font-AfacadFlux p-1">
+                    {seller?.seller?.name}
+                  </b>
+                  <Link
+                    to="/seller-profile"
+                    className="text-sm font-bold font-AfacadFlux bg-gray-200 rounded-sm cursor-pointer hidden group-hover:block p-1 text-center"
+                  >
+                    Profile
+                  </Link>
+                </div>
+              ) : (
+                <><FaRegUserCircle className=" opacity-0" /></>
+              )}
+
+              
             </div>
             <div className="cards text-3xl relative cursor-pointer">
               <span>
@@ -84,10 +95,9 @@ const Header = () => {
                   {" "}
                   <button
                     // to="/users-login"
-                    onClick={handleLogutUser}
                     className="bg-red-500 p-1 text-lg rounded-md text-white cursor-pointer font-bold duration-300 hover:bg-blue-500"
                   >
-                    Logout
+                    Connect With Us
                   </button>
                 </>
               ) : (
@@ -102,6 +112,7 @@ const Header = () => {
                 </>
               )}
             </div>
+            
           </div>
         </div>
       </header>

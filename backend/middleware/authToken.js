@@ -19,7 +19,7 @@ const authTokenMiddleware = async (req, res, next) => {
       return res.status(401).json({ error: "Unauthorized: Token not provided" });
     }
 // console.log(req)
-    // console.log("Token" , token)
+    // console.log("Token" , token) 
 
     // Verify Token
     const decoded = jwt.verify(token, process.env.SECRET_KEY);

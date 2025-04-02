@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const sellerDetailsController = require("../controllers/sellerDetails.controller");
+const authSellerToken = require("../middleware/authSeller.token");
 
-
-router.get("/seller-details" , sellerDetailsController);
+router.get("/details" , authSellerToken, sellerDetailsController);
 
 module.exports = router
