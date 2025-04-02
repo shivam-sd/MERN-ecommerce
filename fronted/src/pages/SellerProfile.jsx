@@ -55,7 +55,7 @@ const SellerProfile = () => {
           to="/"
           className="font-AfacadFlux font-bold underline duration-150 text-xl">Back</Link>
         </aside>
-        <main>main</main>
+        <main><span className="font-AfacadFlux font-bold text-2xl underline duration-200 hover:text-gray-600">All Products :-</span></main>
       </div>
       <Footer />
     </div>
