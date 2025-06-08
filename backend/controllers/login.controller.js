@@ -48,7 +48,7 @@ const loginController = async (req, res) => {
     });
 
   } catch (err) {
-    console.error("Login Error:", err);
+    console.log("Login Error:");
     res.status(500).json({ errors: "Error in user login.", details: err.message });
   }
 };

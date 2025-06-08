@@ -9,7 +9,7 @@ import axios from "axios";
 import { setUserDetails } from "../store/userSlice";
 import { toast } from "react-toastify";
 
-const AdminPanel = () => {
+const UserProfile = () => {
   const user = useSelector((state) => state?.user?.user?.user);
   const dispatch = useDispatch();
 
@@ -47,7 +47,7 @@ const AdminPanel = () => {
 // user ko logout kraya ja rha hai
   const handleLogutUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/users/logout`, {
+      const response = await axios.get(`${import.meta.env.VITE_USERS_BASE_URL}/users/logout`, {
         withCredentials: "include",
       });
       const data = response.data;
@@ -135,4 +135,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default UserProfile;
