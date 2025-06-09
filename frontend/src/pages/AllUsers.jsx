@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MdEdit } from "react-icons/md";
-import { toast } from "react-toastify";
+import { toast  } from "react-toastify";
+import { Outlet, Link } from "react-router-dom";
 
 const AllUsers = () => {
   const [users, setUsers] = useState([]);
@@ -73,7 +74,7 @@ const AllUsers = () => {
                     {user.role}
                   </td>
                   <td className="p-2 border text-blue-500 hover:text-blue-700 cursor-pointer">
-                    <MdEdit />
+                    <Link to={`user/${user._id}`} ><MdEdit /></Link>
                   </td>
                 </tr>
                 

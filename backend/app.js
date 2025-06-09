@@ -13,6 +13,9 @@ const sellerRegisterRoute = require("./routes/sellerRegister.route");
 const sellerLoginRoute = require("./routes/sellerLogin.route");
 const sellerDetailsRoute = require("./routes/sellerDetails.Route");
 const sellerLogoutRoute = require("./routes/sellerLogout.Route");
+const productRoute = require("./routes/product.route");
+const fileupload = require("express-fileupload");
+const cloudinary = require("cloudinary").v2;
 ConnectToDB();
 
 
@@ -23,6 +26,19 @@ app.use(cors({
     origin:"http://localhost:5173",
     credentials:true
 }));
+
+app.use(fileupload({
+    useTempFiles:true,
+    tempFileDir:"/tmp/",
+    createParentPath:true
+}))
+
+// Cloudinary configuration
+cloudinary.config({
+    cloud_name:process.env.CLOUDINARY_CLOUD_NAME,
+    api_key:process.env.CLOUDINARY_API_KEY,
+    api_secret:process.env.CLOUDINARY_API_SECRET
+});
 
 //for User middleware
 app.use("/users" , RegisterRouter);
@@ -36,6 +52,7 @@ app.use("/seller" , sellerLoginRoute);
 app.use("/seller", sellerDetailsRoute);
 app.use("/seller", sellerLogoutRoute);
 
+app.use("/products", productRoute);
 
 
 app.listen(port , () => {

@@ -18,6 +18,7 @@ import SellerProfile from "./pages/SellerProfile";
 import AllProducts from "./pages/AllProducts";
 import AllUsers from "./pages/AllUsers";
 import Admin from "./pages/Admin";
+import CreateProduct from "./pages/CreateProduct";
 
 // Store
 import { setUserDetails } from "./store/userSlice";
@@ -25,6 +26,7 @@ import { setSellerDetails } from "./store/sellerSlice";
 
 // Context
 import Context from "./context/Context";
+import EditUserByAdmin from "./pages/EditUserByAdmin";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -94,13 +96,17 @@ function App() {
         <Route path="/seller-register" element={<SellerRegister />} />
         <Route path="/seller-login" element={<SellerLogin />} />
         <Route path="/seller-profile" element={<SellerProfile />} />
+        <Route path="/user/:id" element={<EditUserByAdmin />} />
+        <Route path="/createProduct" element={<CreateProduct />} />
 
         {/* Optional: Public admin data (can remove if protected) */}
-        <Route path="/all-users" element={<AllUsers />} />
+        <Route path="/all-users" element={<AllUsers />}>
+        </Route>
         <Route path="/all-products" element={<AllProducts />} />
 
         {/* Admin Nested Routes */}
         <Route path="/admin" element={<Admin />}>
+        <Route index element={<AllUsers />} />
           <Route path="all-users" element={<AllUsers />} />
           <Route path="all-products" element={<AllProducts />} />
         </Route>
