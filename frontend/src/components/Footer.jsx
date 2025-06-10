@@ -13,7 +13,7 @@ const Footer = () => {
   };
 
   return (
-    <footer className="w-full bg-gray-200 p-4">
+    <footer className="w-full bg-gray-200 p-4 mt-10">
       {/* Top row - Icons and Links */}
       <div className="container mx-auto flex flex-wrap items-center justify-evenly gap-2">
         <a

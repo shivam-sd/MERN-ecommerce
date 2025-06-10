@@ -115,6 +115,12 @@ const UserProfile = () => {
           <Link to="/all-products" className="text-lg font-AfacadFlux font-bold">All Products</Link>
           </div> */}
 
+          <Link 
+          className="text-lg p-1 bg-red-500 text-white font-AfacadFlux rounded-sm font-bold cursor-pointer mt-5 hover:bg-red-400 duration-200"
+          to={"/admin"}
+          >
+            Go to Dashboard
+          </Link>
           <button 
           className="text-lg p-1 bg-red-500 text-white font-AfacadFlux rounded-sm font-bold cursor-pointer mt-5 hover:bg-red-400 duration-200"
           onClick={handleLogutUser}

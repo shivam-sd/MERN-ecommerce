@@ -19,10 +19,12 @@ import AllProducts from "./pages/AllProducts";
 import AllUsers from "./pages/AllUsers";
 import Admin from "./pages/Admin";
 import CreateProduct from "./pages/CreateProduct";
+import ProductCategory from "./pages/ProductCategory";
 
 // Store
 import { setUserDetails } from "./store/userSlice";
 import { setSellerDetails } from "./store/sellerSlice";
+import { setProductDetails } from "./store/productSlice";
 
 // Context
 import Context from "./context/Context";
@@ -77,13 +79,35 @@ function App() {
     }
   };
 
+  const fetchProductDetails = async () => {
+    try {
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_USERS_BASE_URL}/products/all-products`,
+        {
+          "content-type": "application/json",
+        }
+      );
+
+      console.log("product Data", response.data.product);
+      setProductDetails(response.data.product);
+      dispatch(setProductDetails(response.data));
+    } catch (err) {
+      console.error("Error fetching product details:", err);
+      toast.error(err.response?.data?.errors || "Go to Login", {
+        position: "top-center",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchUsersDetails();
     fetchsellerdetails();
+    fetchProductDetails();
   }, []);
 
   return (
-    <Context.Provider value={{ user, fetchUsersDetails, seller, fetchsellerdetails }}>
+    <Context.Provider value={{ user, fetchUsersDetails, seller, fetchsellerdetails , fetchProductDetails}}>
       <ToastContainer />
       <Routes>
         {/* Public Routes */}
@@ -98,6 +122,8 @@ function App() {
         <Route path="/seller-profile" element={<SellerProfile />} />
         <Route path="/user/:id" element={<EditUserByAdmin />} />
         <Route path="/createProduct" element={<CreateProduct />} />
+        <Route path="/product-category/:category" element={<ProductCategory />} />
+        {/* <Route path="/deleteProduct/:id" element={<AllProducts />} /> */}
 
         {/* Optional: Public admin data (can remove if protected) */}
         <Route path="/all-users" element={<AllUsers />}>

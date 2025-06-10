@@ -56,7 +56,7 @@ const navigate = useNavigate();
       });
       setProductImage(null);
       setPreviewImage(null);
-      navigate("/admin");
+      navigate("/admin/all-products");
     } catch (err) {
       setMessage((err.response?.data?.message || "Something went wrong"));
     } finally {

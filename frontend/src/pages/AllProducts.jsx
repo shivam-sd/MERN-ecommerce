@@ -1,90 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { MdDelete } from "react-icons/md";
+import axios from "axios";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
+  // Fetch all products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
+        const response = await axios.get(
           `${import.meta.env.VITE_USERS_BASE_URL}/products/all-products`,
           {
-            method: "GET",
             headers: {
-              "Content-Type": "application/json",
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
 
-        const data = await response.json();
-
-        if (!response.ok) {
-          return toast.error(data.message || "Failed to fetch products");
-        }
-
-        setProducts(data.products || []);
-        console.log("Fetched Products:", data.products);
-
+        setProducts(response.data.products || []);
       } catch (err) {
-        toast.error(err.message || "Failed to fetch products", {
-          position: "top-center",
-        });
+        toast.error(err.response?.data?.message || "Failed to fetch products");
       }
     };
 
     fetchProducts();
   }, []);
 
+  // Handle product delete
+  const handleDelete = async (productId) => {
+    const confirm = window.confirm("Are you sure you want to delete this product?");
+    if (!confirm) return;
+
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_USERS_BASE_URL}/products/delete-product/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      toast.success(res.data.message || "Product deleted successfully");
+
+      // Update state
+      setProducts((prev) => prev.filter((p) => p._id !== productId));
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error deleting product");
+    }
+  };
+
   return (
-    <div className="w-full min-h-screen p-4 bg-gray-100">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold text-gray-800">All Products</h1>
+    <>
+      <div className="flex justify-between items-center p-2 bg-white shadow-md">
+        <h3 className="font-bold text-xl">All Products</h3>
         <Link
           to="/createProduct"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold py-2 px-4 rounded-md"
+          className="text-xl font-bold bg-blue-600 rounded-sm text-white p-2"
         >
-          + Create Product
+          Upload Product
         </Link>
       </div>
 
-      <div className="overflow-x-auto bg-white rounded-xl shadow-md">
-        <table className="w-full table-auto border-collapse">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="p-3 border">#</th>
-              <th className="p-3 border">Name</th>
-              <th className="p-3 border">Brand</th>
-              <th className="p-3 border">Price</th>
-              <th className="p-3 border">Category</th>
-              <th className="p-3 border">Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.length === 0 ? (
-              <tr>
-                <td colSpan="6" className="text-center p-4 text-gray-500">
-                  No products found.
-                </td>
-              </tr>
-            ) : (
-              products.map((product, index) => (
-                <tr key={product._id || index} className="hover:bg-gray-50">
-                  <td className="p-3 border text-center">{index + 1}</td>
-                  <td className="p-3 border">{product.productName}</td>
-                  <td className="p-3 border">{product.productBrand}</td>
-                  <td className="p-3 border">₹{product.productPrice}</td>
-                  <td className="p-3 border">{product.productCategory}</td>
-                  <td className="p-3 border">{product.productDescription}</td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="w-full min-h-screen bg-gray-200 rounded-md flex justify-center p-3">
+        <div className="bg-white rounded-md shadow-xl w-full h-auto p-2 flex flex-wrap gap-3 container mx-auto">
+          {[...products].reverse().map((product) => (
+            <div
+              className="w-64 bg-gray-100 p-2 rounded-md relative"
+              key={product._id}
+            >
+              <img
+                src={product.productImage}
+                className="rounded-md w-full h-40 object-cover"
+                alt={product.productName}
+              />
+              <div className="flex flex-col mt-2 space-y-1 text-sm">
+                <span><b>Product Name:</b> {product.productName}</span>
+                <span><b>Price:</b> ₹{product.productPrice}</span>
+                <span><b>Brand:</b> {product.productBrand}</span>
+                <p><b>Description:</b> {product.productDescription}</p>
+              </div>
+
+              <button
+                onClick={() => handleDelete(product._id)}
+                className="text-2xl absolute top-2 right-2 text-red-500 cursor-pointer"
+              >
+                <MdDelete />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

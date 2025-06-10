@@ -62,8 +62,32 @@ const getAllProduct = async (req,res) => {
     }
 }
 
+const DeleteProductController = async (req,res) => {
+try{
+    const productId = req.params.id;
+    if(!productId){
+        return res.status(400).json({
+            message: "Product ID is required"
+        });
+    }
+
+    const deletedProduct = await ProductModel.findByIdAndDelete(productId);
+
+    res.status(200).json({
+        message: "Product deleted successfully",
+        product: deletedProduct
+    });
+}catch(err){;
+    res.status(500).json({
+        message: "Internal Server Error",
+        error: err.message
+    });
+}
+}
+
 
 module.exports = {
     productController ,
-    getAllProduct
+    getAllProduct,
+    DeleteProductController
 };
